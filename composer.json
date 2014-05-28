@@ -1,0 +1,21 @@
+{
+	"name" : "ibadgen/ims-lti",
+	"description" : "A PHP Library to help build Tool Consumers and Tool Providers for the IMS LTI standard",
+	"require" : {
+		"ext-oauth" : "*"
+	},
+	"require-dev" : {
+	    "phpunit/phpunit" : "4.1.*" 
+	},
+	"authors" : [{
+			"name" : "Iván Badgen",
+			"email" : "ivanbadgen@gmail.com"
+		}
+	],
+	"minimum-stability" : "dev",
+	"autoload" : {
+		"psr-0" : {
+			"" : "src/"
+		}
+	}
+}

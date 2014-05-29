@@ -68,23 +68,53 @@ class ToolConfiguration {
 	
 	public function processXml($xml) {
 		$doc = new \SimpleXMLElement($xml);
-		foreach($this->xmlNamespaces as $prefix => $ns) {
-			$doc->registerXPathNamespace($prefix, $ns);
-		}
 		
 		if($root = $this->getFirstMatchOrNull($doc, '//xmlns:cartridge_basiclti_link')) {
 			$this->parameters['title'] = $this->getFirstMatchOrNull($root, '//blti:title');
+			$this->parameters['description'] = $this->getFirstMatchOrNull($root, '//blti:description');
+			$this->parameters['launch_url'] = $this->getFirstMatchOrNull($root, '//blti:launch_url');
+			$this->parameters['secure_launch_url'] = $this->getFirstMatchOrNull($root, '//blti:secure_launch_url');
+			$this->parameters['icon'] = $this->getFirstMatchOrNull($root, '//blti:icon');
+			$this->parameters['secure_icon'] = $this->getFirstMatchOrNull($root, '//blti:secure_icon');
+			$this->parameters['cartridge_bundle'] = $this->getAttributeOrNull($root, '//xmlns:cartridge_bundle', 'identifierref');
+			$this->parameters['cartridge_icon'] = $this->getAttributeOrNull($root, '//xmlns:cartridge_icon', 'identifierref');
+			
+			if($vendor = $this->getFirstMatchOrNull($root, '//blti:vendor')) {
+				$this->parameters['vendor_code'] = $this->getFirstMatchOrNull($vendor, '//lticp:code');
+				$this->parameters['vendor_description'] = $this->getFirstMatchOrNull($vendor, '//lticp:description');
+				$this->parameters['vendor_name'] = $this->getFirstMatchOrNull($vendor, '//lticp:name');
+				$this->parameters['vendor_url'] = $this->getFirstMatchOrNull($vendor, '//lticp:url');
+				$this->parameters['vendor_contact_email'] = $this->getFirstMatchOrNull($vendor, '//lticp:contact/lticp:email');
+				$this->parameters['vendor_contact_name'] = $this->getFirstMatchOrNull($vendor, '//lticp:contact/lticp:name');
+			}
+						
+			//@TODO: Custom Parameters
+			
+			//@TODO: Extesions
 		}
 	}
 	
 	// Private methods
 	
+	private function registerNamespaces(\SimpleXMLElement $node) {
+		foreach($this->xmlNamespaces as $prefix => $ns) {
+			$node->registerXPathNamespace($prefix, $ns);
+		}
+	}
+	
 	private function getFirstMatchOrNull(&$node, $xpath) {
+		$this->registerNamespaces($node);
+		
 		$results = $node->xpath($xpath);
 		if(count($results)) {
 			return $results[0];
 		}
 		return null;
+	}
+	
+	private function getAttributeOrNull(&$node, $xpath, $attribute) {
+		$match = $this->getFirstMatchOrNull($node, $xpath);
+		return $match ? $match[$attribute] : null; 
 	}
 	
 }

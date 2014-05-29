@@ -49,6 +49,59 @@ class ToolConfiguration {
 		return $this->getParameter('title');
 	}
 	
+	public function getDescription() {
+		return $this->getParameter('description');
+	}
+	
+	public function getLaunchUrl() {
+		return $this->getParameter('launch_url');
+	}
+	
+	public function getSecureLaunchUrl() {
+		return $this->getParameter('secure_launch_url');
+	}
+	
+	public function getIcon() {
+		return $this->getParameter('icon');
+	}
+	
+	public function getSecureIcon() {
+		return $this->getParameter('secure_icon');
+	}
+	
+	public function getCartridgeBundle() {
+		return $this->getParameter('cartridge_bundle');
+	}
+	
+	public function getCartridgeIcon() {
+		return $this->getParameter('cartridge_icon');
+	}
+	
+	public function getVendorCode() {
+		return $this->getParameter('vendor_code');
+	}
+	
+	public function getVendorName() {
+		return $this->getParameter('vendor_name');
+	}
+	
+	public function getVendorDescription() {
+		return $this->getParameter('vendor_description');
+	}
+	
+	public function getVendorUrl() {
+		return $this->getParameter('vendor_url');
+	}
+	
+	public function getVendorContactEmail() {
+		return $this->getParameter('vendor_contact_email');
+	}
+	
+	public function getVendorContactName() {
+		return $this->getParameter('vendor_contact_name');
+	}
+	
+	
 	// Public methods
 	
 	public function __construct($params = array()) {
@@ -93,6 +146,8 @@ class ToolConfiguration {
 			//@TODO: Extesions
 		}
 	}
+	
+	//@TODO: toXml (config to xml) 
 	
 	// Private methods
 	

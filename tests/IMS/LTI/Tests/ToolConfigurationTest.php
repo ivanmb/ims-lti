@@ -54,5 +54,7 @@ XML;
 	public function testFromXml() {
 		$config = ToolConfiguration::createFromXml($this->testXml);
 		$this->assertEquals('Test Config', $config->getTitle());
+		$this->assertEquals('Description of boringness', $config->getDescription());
+		//@TODO: test the rest
 	}
 } 

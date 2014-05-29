@@ -2,7 +2,7 @@
 
 namespace IMS\LTI;
 
-abstract class Roles {
+abstract class Roles extends EnumParam {
 	const STUDENT 				= 'student';
 	const FACULTY 				= 'faculty';
 	const MEMBER 				= 'member';
@@ -18,8 +18,4 @@ abstract class Roles {
 	const OBSERVER 				= 'observer';
 	const NONE 					= 'none';
 	
-	public static function isValid($role) {
-		$clazz = new \ReflectionClass(get_called_class());
-		return in_array($role, $clazz->getConstants());
-	}
 }

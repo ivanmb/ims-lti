@@ -2,13 +2,13 @@
 
 namespace IMS\LTI\Tests;
 
-use IMS\LTI\LaunchParams;
+use IMS\LTI\ParameterBuilder;
 use IMS\LTI\Roles;
 
-class LaunchParamsTest extends \PHPUnit_Framework_TestCase {
+class ParameterBuilderTest extends \PHPUnit_Framework_TestCase {
 	
 	public function testSetSomething_Ok() {
-		$params = new LaunchParams();
+		$params = new ParameterBuilder();
 		$params->set('context_id', 10);
 		$params->set('context_label', 'Some context');
 		
@@ -17,7 +17,7 @@ class LaunchParamsTest extends \PHPUnit_Framework_TestCase {
 	}
 	
 	public function testGetUndefined_null() {
-		$params = new LaunchParams();
+		$params = new ParameterBuilder();
 		$this->assertNull($params->get('undefined'));
 	}
 	
@@ -25,17 +25,17 @@ class LaunchParamsTest extends \PHPUnit_Framework_TestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testSetInvalidParamter_InvalidArgument() {
-		$params = new LaunchParams();
+		$params = new ParameterBuilder();
 		$params->set('unexsistent', 1);
 	}
 	
 	public function testAddRole_Ok() {
-		$params = new LaunchParams();
+		$params = new ParameterBuilder();
 		$params->addRole(Roles::ALUMNI);
 	}
 	
 	public function testSetRoles_Ok() {
-		$params = new LaunchParams();
+		$params = new ParameterBuilder();
 		$params->setRoles(array(Roles::ALUMNI, Roles::GUEST));
 	}
 	
@@ -43,7 +43,7 @@ class LaunchParamsTest extends \PHPUnit_Framework_TestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testSetRoles_withInexistent() {
-		$params = new LaunchParams();
+		$params = new ParameterBuilder();
 		$params->setRoles(array(Roles::ALUMNI, 'unknown'));
 	}
 	
@@ -51,12 +51,12 @@ class LaunchParamsTest extends \PHPUnit_Framework_TestCase {
 	 * @expectedException InvalidArgumentException
 	 */
 	public function testAddRoleInexistent() {
-		$params = new LaunchParams();
+		$params = new ParameterBuilder();
 		$params->addRole('undefined');
 	}
 	
 	public function testBuildParam_basic() {
-		$params = new LaunchParams();
+		$params = new ParameterBuilder();
 		$params->set('user_id', 11)->set('context_id', 22)->set('context_title', 'Some Course');
 		$params->addRole(Roles::STUDENT)->addRole(Roles::OBSERVER);
 		$built = $params->buildParams();

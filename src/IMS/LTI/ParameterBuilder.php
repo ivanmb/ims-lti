@@ -18,7 +18,7 @@ class ParameterBuilder {
 			$params['roles'] = join(',', $this->roles);
 		}
 		
-		return http_build_query($params);
+		return $params;
 	}
 	
 	/**

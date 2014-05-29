@@ -143,7 +143,7 @@ class ToolConfiguration {
 						
 			//@TODO: Custom Parameters
 			
-			//@TODO: Extesions
+			//@TODO: Extensions
 		}
 	}
 	

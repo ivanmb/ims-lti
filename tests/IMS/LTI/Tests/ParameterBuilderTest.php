@@ -59,17 +59,7 @@ class ParameterBuilderTest extends \PHPUnit_Framework_TestCase {
 		$params = new ParameterBuilder();
 		$params->set('user_id', 11)->set('context_id', 22)->set('context_title', 'Some Course');
 		$params->addRole(Roles::STUDENT)->addRole(Roles::OBSERVER);
-		$built = $params->buildParams();
-		
-		// Build an array from the result and compare
-		$result = array();
-		foreach (explode('&', $built) as $chunk) {
-			$param = explode("=", $chunk);
-		
-			if ($param) {
-				$result[urldecode($param[0])] = urldecode($param[1]);
-			}
-		}
+		$result = $params->buildParams();
 		
 		$this->assertEquals(11, $result['user_id']);
 		$this->assertEquals(22, $result['context_id']);

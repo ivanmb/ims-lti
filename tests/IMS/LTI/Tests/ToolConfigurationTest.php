@@ -55,6 +55,7 @@ XML;
 		$config = ToolConfiguration::createFromXml($this->testXml);
 		$this->assertEquals('Test Config', $config->getTitle());
 		$this->assertEquals('Description of boringness', $config->getDescription());
+		$this->assertEquals('http://www.example.com/lti', $config->getLaunchUrl());
 		//@TODO: test the rest
 	}
 } 

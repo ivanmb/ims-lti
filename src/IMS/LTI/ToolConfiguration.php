@@ -122,7 +122,7 @@ class ToolConfiguration {
 	public function processXml($xml) {
 		$doc = new \SimpleXMLElement($xml);
 		
-		if($root = $this->getFirstMatchOrNull($doc, '//xmlns:cartridge_basiclti_link')) {
+		if($root = $this->getFirstNodeOrNull($doc, '//xmlns:cartridge_basiclti_link')) {
 			$this->parameters['title'] = $this->getFirstMatchOrNull($root, '//blti:title');
 			$this->parameters['description'] = $this->getFirstMatchOrNull($root, '//blti:description');
 			$this->parameters['launch_url'] = $this->getFirstMatchOrNull($root, '//blti:launch_url');
@@ -132,7 +132,7 @@ class ToolConfiguration {
 			$this->parameters['cartridge_bundle'] = $this->getAttributeOrNull($root, '//xmlns:cartridge_bundle', 'identifierref');
 			$this->parameters['cartridge_icon'] = $this->getAttributeOrNull($root, '//xmlns:cartridge_icon', 'identifierref');
 			
-			if($vendor = $this->getFirstMatchOrNull($root, '//blti:vendor')) {
+			if($vendor = $this->getFirstNodeOrNull($root, '//blti:vendor')) {
 				$this->parameters['vendor_code'] = $this->getFirstMatchOrNull($vendor, '//lticp:code');
 				$this->parameters['vendor_description'] = $this->getFirstMatchOrNull($vendor, '//lticp:description');
 				$this->parameters['vendor_name'] = $this->getFirstMatchOrNull($vendor, '//lticp:name');
@@ -157,7 +157,7 @@ class ToolConfiguration {
 		}
 	}
 	
-	private function getFirstMatchOrNull(&$node, $xpath) {
+	private function getFirstNodeOrNull($node, $xpath) {
 		$this->registerNamespaces($node);
 		
 		$results = $node->xpath($xpath);
@@ -167,8 +167,15 @@ class ToolConfiguration {
 		return null;
 	}
 	
-	private function getAttributeOrNull(&$node, $xpath, $attribute) {
-		$match = $this->getFirstMatchOrNull($node, $xpath);
+	private function getFirstMatchOrNull($node, $xpath) {
+		$node = $this->getFirstNodeOrNull($node, $xpath);
+		
+		return isset($node) ? (string) $node : null;
+	}
+	
+	private function getAttributeOrNull($node, $xpath, $attribute) {
+		$match = $this->getFirstNodeOrNull($node, $xpath);
+		
 		return $match ? $match[$attribute] : null; 
 	}
 	

@@ -1,5 +1,5 @@
 {
-	"name" : "ibadgen/ims-lti",
+	"name" : "ivanmb/ims-lti",
 	"description" : "A PHP Library to help build Tool Consumers and Tool Providers for the IMS LTI standard",
 	"require" : {
 		"ext-oauth" : "*"

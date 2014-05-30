@@ -38,23 +38,23 @@ class ToolConsumer {
 		$url = $this->toolConfiguration->getLaunchUrl();
 		//@TODO: Remove query string parameters and append them to parameters
 		
-		$this->setOAuthParameters();
-		
 		$consumer = new \OAuth($this->consumerKey, $this->consumerSecret, OAUTH_SIG_METHOD_HMACSHA1, OAUTH_AUTH_TYPE_URI);
+		$timestamp = time();
+		$nonce = md5($timestamp);
+		$consumer->setTimestamp($timestamp);
+		$consumer->setNonce($nonce);
 		$signature = $consumer->generateSignature('POST', $url, $this->parameters);
+		
+		$this->parameters[LaunchParameters::OAUTH_CONSUMER_KEY] = $this->consumerKey;
+		$this->parameters[LaunchParameters::OAUTH_SIGNATURE_METHOD] = 'HMAC-SHA1';
+		$this->parameters[LaunchParameters::OAUTH_VERSION] = '1.0';
+		$this->parameters[LaunchParameters::OAUTH_TIMESTAMP] = $timestamp;
+		$this->parameters[LaunchParameters::OAUTH_NONCE] = $nonce;
 		$this->parameters[LaunchParameters::OAUTH_SIGNATURE] = $signature;
 		
 		return $this->parameters;
 	}
-	
-	private function setOAuthParameters() {
-		$this->parameters[LaunchParameters::OAUTH_CONSUMER_KEY] = $this->consumerKey;
-		$this->parameters[LaunchParameters::OAUTH_SIGNATURE_METHOD] = 'HMAC-SHA1';
-		$this->parameters[LaunchParameters::OAUTH_VERSION] = '1.0';
-		$this->parameters[LaunchParameters::OAUTH_TIMESTAMP] = time();
-		//@TODO: Nonce
-	}
-	
+
 	private function hasRequiredParams() {
 		return 	$this->consumerKey && 
 				$this->consumerSecret && 

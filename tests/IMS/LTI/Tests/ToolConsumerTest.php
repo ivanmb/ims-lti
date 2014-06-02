@@ -15,7 +15,8 @@ class ToolConsumerTest extends \PHPUnit_Framework_TestCase {
 		);
 		
 		$consumer = new ToolConsumer('asd', 'def', $config, $params);
-		var_dump($consumer->generateLaunchData());
+		$parameters = $consumer->generateLaunchData();
+		//@TODO: Assert about response parameters
 	}
 	
 }

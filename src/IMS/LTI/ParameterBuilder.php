@@ -6,7 +6,7 @@ class ParameterBuilder {
 	
 	protected $parameters = array();
 		
-	//@TODO: Custom Parameters
+	protected $customParameters = array();
 	
 	//@TODO: Extension Parameters
 	
@@ -18,7 +18,7 @@ class ParameterBuilder {
 			$params['roles'] = join(',', $this->roles);
 		}
 		
-		return $params;
+		return array_merge($params, $this->customParameters);
 	}
 	
 	/**
@@ -59,9 +59,21 @@ class ParameterBuilder {
 		return $this;
 	}
 	
+	public function setCustom($parameter, $value) {
+		$this->customParameters['custom_'.$parameter] = $value;
+	
+		return $this;
+	}
+	
 	public function get($parameter) {
 		if (array_key_exists($parameter, $this->parameters))
 			return $this->parameters[$parameter];
+	}
+	
+	public function getCustom($parameter) {
+		$key = 'custom_'.$parameter;
+		if (array_key_exists($key, $this->customParameters))
+			return $this->customParameters[$key];
 	}
 	
 } 

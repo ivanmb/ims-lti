@@ -11,8 +11,10 @@ class ParameterBuilderTest extends \PHPUnit_Framework_TestCase {
 		$params = new ParameterBuilder();
 		$params->set('context_id', 10);
 		$params->set('context_label', 'Some context');
+		$params->setCustom('my_custom', 'Something');
 		
 		$this->assertEquals('Some context', $params->get('context_label'));
+		$this->assertEquals('Something', $params->getCustom('my_custom'));
 		$this->assertEquals(10, $params->get('context_id'));
 	}
 	
@@ -57,13 +59,15 @@ class ParameterBuilderTest extends \PHPUnit_Framework_TestCase {
 	
 	public function testBuildParam_basic() {
 		$params = new ParameterBuilder();
-		$params->set('user_id', 11)->set('context_id', 22)->set('context_title', 'Some Course');
+		$params->set('user_id', 11)->set('context_id', 22)->set('context_title', 'Some Course')->setCustom('my_custom', 'Something');
+		
 		$params->addRole(Roles::STUDENT)->addRole(Roles::OBSERVER);
 		$result = $params->buildParams();
 		
 		$this->assertEquals(11, $result['user_id']);
 		$this->assertEquals(22, $result['context_id']);
 		$this->assertEquals('Some Course', $result['context_title']);
+		$this->assertEquals('Something', $result['custom_my_custom']);
 		$this->assertEquals(Roles::STUDENT.','.Roles::OBSERVER, $result['roles']);
 	}
 	

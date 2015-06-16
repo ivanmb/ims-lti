@@ -68,6 +68,13 @@ XML;
 		$this->assertEquals('Test Config', $config->getTitle());
 		$this->assertEquals('Description of boringness', $config->getDescription());
 		$this->assertEquals('http://www.example.com/lti', $config->getLaunchUrl());
+
+		$this->assertEquals('test.tool', $config->getVendorName());
+		$this->assertEquals('test', $config->getVendorCode());
+		$this->assertEquals('We test things', $config->getVendorDescription());
+		$this->assertEquals('http://www.example.com/about', $config->getVendorUrl());
+		$this->assertEquals('Joe Support', $config->getVendorContactEmail());
+		$this->assertEquals('support@example.com', $config->getVendorContactName());
 		//@TODO: test the rest
 	}
 
@@ -85,5 +92,13 @@ XML;
 			$this->assertTrue(method_exists($config, "get$camelCased"), "Getter exists for option: $option");
 			$this->assertEquals($option, $config->{"get$camelCased"}(), "Getter returns expected value for option: $option");
 		}
+	}
+
+	public function testGetParameter() {
+		$config = new ToolConfiguration();
+		$reflection = new \ReflectionClass(get_class($config));
+		$getParameter = $reflection->getMethod('getParameter');
+		$getParameter->setAccessible(true);
+		$this->assertNull($getParameter->invoke($config, 'Bogus'), "getParameter returns without error with bogus parameter");
 	}
 } 

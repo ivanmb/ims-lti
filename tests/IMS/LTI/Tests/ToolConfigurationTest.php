@@ -4,7 +4,17 @@ namespace IMS\LTI\Tests;
 
 use IMS\LTI\ToolConfiguration;
 class ToolConfigurationTest extends \PHPUnit_Framework_TestCase {
-	
+
+	private function getOptions() {
+		$config = new ToolConfiguration();
+
+		$reflection = new \ReflectionClass(get_class($config));
+		$options = $reflection->getProperty('options');
+		$options->setAccessible(true);
+
+		return $options->getValue($config);
+	}
+
 	private $testXml = <<<XML
 	<cartridge_basiclti_link xsi:schemaLocation="http://www.imsglobal.org/xsd/imslticc_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticc_v1p0.xsd http://www.imsglobal.org/xsd/imsbasiclti_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imsbasiclti_v1p0p1.xsd http://www.imsglobal.org/xsd/imslticm_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticm_v1p0.xsd http://www.imsglobal.org/xsd/imslticp_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticp_v1p0.xsd" xmlns:lticm="http://www.imsglobal.org/xsd/imslticm_v1p0" xmlns:blti="http://www.imsglobal.org/xsd/imsbasiclti_v1p0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:lticp="http://www.imsglobal.org/xsd/imslticp_v1p0" xmlns="http://www.imsglobal.org/xsd/imslticc_v1p0">
 	  <blti:title>Test Config</blti:title>
@@ -48,7 +58,9 @@ XML;
 	}
 	
 	public function testConstructOk() {
-		new ToolConfiguration(array('title'	=> 'some title', 'icon' => 'someurl'));
+		$options = $this->getOptions();
+		$options = array_combine($options, $options);
+		new ToolConfiguration($options);
 	}
 	
 	public function testFromXml() {
@@ -57,5 +69,18 @@ XML;
 		$this->assertEquals('Description of boringness', $config->getDescription());
 		$this->assertEquals('http://www.example.com/lti', $config->getLaunchUrl());
 		//@TODO: test the rest
+	}
+
+	public function testGetters() {
+		$options = $this->getOptions();
+
+		// HACK: This test relies on the constructor working properly; reflection or setters would be better
+		$config = new ToolConfiguration(array_combine($options, $options));
+
+		foreach ($options as $option) {
+			$camelCased = preg_replace('/(?:^|_)(.?)/e',"strtoupper('$1')", $option);
+			$this->assertTrue(method_exists($config, "get$camelCased"), "Getter exists for option: $option");
+			$this->assertEquals($option, $config->{"get$camelCased"}(), "Getter returns expected value for option: $option");
+		}
 	}
 } 

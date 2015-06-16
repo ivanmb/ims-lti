@@ -23,4 +23,4 @@ script:
     - composer test
 
 after_success:
-  - php vendor/bin/coveralls -v
+   - php vendor/bin/coveralls -v

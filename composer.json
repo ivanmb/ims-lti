@@ -22,5 +22,8 @@
         "branch-alias": {
             "dev-master": "master"
         }
+    },
+    "scripts": {
+        "test": "phpunit"
     }
 }

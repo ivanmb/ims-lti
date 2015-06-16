@@ -78,7 +78,10 @@ XML;
 		$config = new ToolConfiguration(array_combine($options, $options));
 
 		foreach ($options as $option) {
-			$camelCased = preg_replace('/(?:^|_)(.?)/e',"strtoupper('$1')", $option);
+			$camelCased = preg_replace_callback('/(?:^|_)(.?)/', function ($matches) {
+				return strtoupper($matches[1]);
+			}, $option);
+
 			$this->assertTrue(method_exists($config, "get$camelCased"), "Getter exists for option: $option");
 			$this->assertEquals($option, $config->{"get$camelCased"}(), "Getter returns expected value for option: $option");
 		}

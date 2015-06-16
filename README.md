@@ -1,5 +1,6 @@
 ims-lti
 =======
+[![Build Status](https://travis-ci.org/jmealo/ims-lti.svg?branch=develop)](https://travis-ci.org/jmealo/ims-lti)
 
 PHP library to help create Tool Providers and Tool Consumers for the IMS LTI standard [See](http://www.imsglobal.org/lti/index.html).
 

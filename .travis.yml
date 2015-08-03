@@ -1,0 +1,26 @@
+language: php
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+php:
+  - 5.5
+  - 5.6
+
+matrix:
+  fast_finish: true
+
+before_install:
+    - pecl install oauth
+
+before_script:
+    - mkdir -p build/logs
+    - composer self-update
+    - composer install --dev --no-interaction
+
+script:
+    - composer test
+
+after_success:
+   - php vendor/bin/coveralls -v
